@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Matrix Terminal</title>
+
+<style>
+body{
+background:black;
+color:#00ff00;
+font-family:monospace;
+padding:20px;
+}
+
+input{
+background:black;
+border:none;
+color:#00ff00;
+font-family:monospace;
+outline:none;
+}
+
+.cursor{
+animation:blink 1s infinite;
+}
+
+@keyframes blink{
+0%{opacity:1}
+50%{opacity:0}
+100%{opacity:1}
+}
+</style>
+
+</head>
+
+<body>
+
+<h2>Matrix System Terminal</h2>
+
+<div id="output">
+<p>Initializing system...</p>
+<p>Access granted.</p>
+<p>Type <b>help</b></p>
+</div>
+
+<span>> </span>
+<input id="cmd" autofocus>
+
+<script>
+
+let input=document.getElementById("cmd");
+let output=document.getElementById("output");
+
+input.addEventListener("keydown",function(e){
+
+if(e.key==="Enter"){
+
+let cmd=input.value;
+
+output.innerHTML += "<p>> "+cmd+"</p>";
+
+if(cmd==="help"){
+output.innerHTML += "<p>Commands: about, secret, clear</p>";
+}
+
+else if(cmd==="about"){
+output.innerHTML += "<p>This is my matrix style website 😎</p>";
+}
+
+else if(cmd==="secret"){
+output.innerHTML += "<p>Welcome hacker 🟢</p>";
+}
+
+else if(cmd==="clear"){
+output.innerHTML="";
+}
+
+input.value="";
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
