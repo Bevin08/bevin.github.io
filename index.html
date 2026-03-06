@@ -5,10 +5,18 @@
 
 <style>
 body{
+margin:0;
+overflow:hidden;
 background:black;
 color:#00ff00;
 font-family:monospace;
-padding:20px;
+}
+
+#terminal{
+position:absolute;
+top:20px;
+left:20px;
+z-index:2;
 }
 
 input{
@@ -19,14 +27,11 @@ font-family:monospace;
 outline:none;
 }
 
-.cursor{
-animation:blink 1s infinite;
-}
-
-@keyframes blink{
-0%{opacity:1}
-50%{opacity:0}
-100%{opacity:1}
+canvas{
+position:fixed;
+top:0;
+left:0;
+z-index:1;
 }
 </style>
 
@@ -34,18 +39,62 @@ animation:blink 1s infinite;
 
 <body>
 
-<h2>Matrix System Terminal</h2>
+<canvas id="matrix"></canvas>
 
-<div id="output">
-<p>Initializing system...</p>
-<p>Access granted.</p>
+<div id="terminal">
+<h3>Matrix System</h3>
 <p>Type <b>help</b></p>
-</div>
-
+<div id="output"></div>
 <span>> </span>
 <input id="cmd" autofocus>
+</div>
 
 <script>
+
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+
+canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;
+
+const letters = "アカサタナハマヤラワ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const matrix = letters.split("");
+
+const fontSize = 16;
+const columns = canvas.width/fontSize;
+
+const drops = [];
+
+for(let x=0;x<columns;x++)
+drops[x]=1;
+
+function draw(){
+
+ctx.fillStyle="rgba(0,0,0,0.05)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+ctx.fillStyle="#0F0";
+ctx.font=fontSize+"px monospace";
+
+for(let i=0;i<drops.length;i++){
+
+const text = matrix[Math.floor(Math.random()*matrix.length)];
+
+ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+
+if(drops[i]*fontSize>canvas.height && Math.random()>0.975)
+drops[i]=0;
+
+drops[i]++;
+
+}
+
+}
+
+setInterval(draw,35);
+
+
+// terminal commands
 
 let input=document.getElementById("cmd");
 let output=document.getElementById("output");
@@ -63,11 +112,11 @@ output.innerHTML += "<p>Commands: about, secret, clear</p>";
 }
 
 else if(cmd==="about"){
-output.innerHTML += "<p>This is my matrix style website 😎</p>";
+output.innerHTML += "<p>Welcome to my Matrix website 😎</p>";
 }
 
 else if(cmd==="secret"){
-output.innerHTML += "<p>Welcome hacker 🟢</p>";
+output.innerHTML += "<p>ACCESS GRANTED 🟢</p>";
 }
 
 else if(cmd==="clear"){
